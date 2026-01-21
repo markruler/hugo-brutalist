@@ -1,13 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	{{- $desc := "" -}}
+	{{- if .Params.description -}}
+		{{- $desc = .Params.description -}}
+	{{- else if .Summary -}}
+		{{- $desc = .Summary -}}
+	{{- else if .Site.Params.description -}}
+		{{- $desc = .Site.Params.description -}}
+	{{- end -}}
+	{{- if $desc -}}
+	<meta name="description" content="{{ $desc | plainify }}" />
+	{{- end -}}
 
-	<title>{{ if not .IsHome }}{{ .Title }} | {{ end }}{{ .Site.Title }}</title>
+	{{- with .Site.Params.favicon -}}
+	<link rel="icon" href="{{ . }}" />
+	{{- end -}}
 
-	<link rel="stylesheet" href="/css/style.css" type="text/css" media="all" />
+	<title>{{ if not .IsHome }}{{ .Title }} | {{ end }}{{ .Site.Params.author.name }}</title>
+
+	{{ $style := resources.Get "scss/style.scss" | toCSS }}
+	<link rel="stylesheet" href="{{ $style.RelPermalink }}" type="text/css" media="all" />
 
 	{{ with .OutputFormats.Get "rss" -}}
 		{{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
