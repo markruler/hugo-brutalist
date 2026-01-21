@@ -66,7 +66,7 @@ body {
 
 .content {
   max-width: 900px;
-  margin: 14px auto;
+  margin: 18px auto;
   padding: 12px;
   background: var(--panel);
   border: 2px solid var(--border);
@@ -78,22 +78,26 @@ body {
 h1,
 h2,
 h3 {
-  margin-top: 0.6em;
-  margin-bottom: 0.3em;
+  margin-top: 0.9em;
+  margin-bottom: 0.5em;
 }
 
 h1 {
   font-size: 26px;
-  border-bottom: 2px solid var(--border);
   padding-bottom: 4px;
+  border-bottom: 2px solid var(--border);
 }
 
 h2 {
   font-size: 20px;
+  padding-bottom: 2px;
+  border-bottom: 2px dotted var(--border);
 }
 
 h3 {
   font-size: 18px;
+  padding-bottom: 2px;
+  border-bottom: 1px dashed var(--border);
 }
 
 p,
