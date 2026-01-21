@@ -21,7 +21,7 @@
 
 	<title>{{ if not .IsHome }}{{ .Title }} | {{ end }}{{ .Site.Params.author.name }}</title>
 
-	{{ $style := resources.Get "scss/style.scss" | toCSS }}
+	{{ $style := resources.Get "scss/style.scss" | toCSS (dict "outputStyle" "compressed") }}
 	<link rel="stylesheet" href="{{ $style.RelPermalink }}" type="text/css" media="all" />
 
 	{{ with .OutputFormats.Get "rss" -}}
