@@ -4,8 +4,16 @@
 
 {{- $isExternal := or (hasPrefix $href "http://") (hasPrefix $href "https://") -}}
 
-{{- if and $isExternal (not (in $href "utm_source=")) -}}
-  {{- $utm := "utm_source=markruler.github.io" -}}
+{{- if $isExternal -}}
+  {{- $utmSource := .Page.Site.Params.utm_source | default "" -}}
+  {{- $utmParts := slice -}}
+  {{- if and $utmSource (not (in $href "utm_source=")) -}}
+    {{- $utmParts = $utmParts | append (printf "utm_source=%s" $utmSource) -}}
+  {{- end -}}
+  {{- $utmMedium := .Page.Site.Params.utm_medium | default "" -}}
+  {{- if and $utmMedium (not (in $href "utm_medium=")) -}}
+    {{- $utmParts = $utmParts | append (printf "utm_medium=%s" $utmMedium) -}}
+  {{- end -}}
 
   {{- $base := $href -}}
   {{- $frag := "" -}}
@@ -18,12 +26,14 @@
     {{- end -}}
   {{- end -}}
 
-  {{- $sep := "?" -}}
-  {{- if in $base "?" -}}
-    {{- $sep = "&" -}}
+  {{- if gt (len $utmParts) 0 -}}
+    {{- $sep := "?" -}}
+    {{- if in $base "?" -}}
+      {{- $sep = "&" -}}
+    {{- end -}}
+    {{- $utm := delimit $utmParts "&" -}}
+    {{- $href = printf "%s%s%s%s" $base $sep $utm $frag -}}
   {{- end -}}
-
-  {{- $href = printf "%s%s%s%s" $base $sep $utm $frag -}}
 {{- end -}}
 
 <a href="{{ $href | safeURL }}"
